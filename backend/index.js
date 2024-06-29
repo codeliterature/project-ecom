@@ -34,6 +34,7 @@ connection(URI)
     });
 
 app.use('/api/v1/auth', require('./routes/userRoutes'));
+app.use('/api/v1/products', require('./routes/productRoutes'));
 
 app.get('/auth/google/callback', 
     passport.authenticate('google', {
