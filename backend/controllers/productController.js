@@ -25,7 +25,35 @@ const addProducts = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ status: 500, message: "Internal Server Error" });
+    console.log(error);
   }
 };
 
-module.exports = { addProducts };
+
+const deleteProducts = async (req, res) => {
+  try {
+    const userRole = req.user.role;
+    if (userRole == "admin") {
+      const productId = req.headers['productid'];
+      const result = await Product.findByIdAndDelete(productId);
+      if (result) {
+        res
+          .status(201)
+          .json({
+            status: 201,
+            message: "Product deleted successfully",
+          });
+      } else {
+        console.log('Product not found');
+      }
+    } else {
+      res.status(401).json({ status: 401, message: "Unauthorized Access" });
+    }
+  } catch (error) {
+    res.status(500).json({ status: 500, message: "Internal Server Error" });
+    console.log(error);
+  }
+}
+
+
+module.exports = { addProducts, deleteProducts };
