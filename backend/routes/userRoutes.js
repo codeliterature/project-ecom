@@ -12,7 +12,7 @@ function isLoggedIn(req, res, next) {
 
 router.post('/signup', signup);
 router.post('/login', login);
-router.get("/getUser", authMiddleware, userDetail);
+router.get("/getuser", authMiddleware, userDetail);
 
 
 router.get('/google',

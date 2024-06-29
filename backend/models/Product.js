@@ -11,7 +11,6 @@ const productSchema = new Schema(
     },
     description: {
       type: String,
-      required: true,
     },
     cost: {
       type: Number,
@@ -31,7 +30,6 @@ const productSchema = new Schema(
     images: [
       {
         type: String,
-        required: true,
       },
     ],
     stockQuantity: {

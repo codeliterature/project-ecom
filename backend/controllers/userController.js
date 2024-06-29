@@ -9,6 +9,10 @@ const Jwtsecret = "mysecret";
 const signup = async (req, res) => {
   try {
     const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (user){
+      return res.status(400).json({ status: "failure", error: "Email already exists" });
+    }
     const username = email.split("@")[0];
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const userData = {
@@ -16,9 +20,14 @@ const signup = async (req, res) => {
       email,
       password: hashedPassword,
     };
-    const newUser = new User(userData);
-    const savedUser = await newUser.save();
-    const token = jwt.sign({user : {id : savedUser._id.toString()}}, Jwtsecret);
+    const newUser = await User.create(userData);
+    const data = {
+      newUser : {
+        id: newUser.id,
+        role: newUser.role
+      }
+    }
+    const token = jwt.sign(data, Jwtsecret);
     
     res.status(201).json({ status: 201, message: "User created successfully", token });
   } catch (error) {
@@ -39,7 +48,13 @@ const login = async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ status: 401, message: "Invalid credentials" });
     }
-    const token = jwt.sign({user : {id : user.id}}, Jwtsecret);
+    const data = {
+      user : {
+        id: user.id,
+        role: user.role
+      }
+    }
+    const token = jwt.sign(data, Jwtsecret);
     res.status(200).json({ status: 200, message: "Login successful", token });
   } catch (error) {
     console.error("Error during login:", error);
