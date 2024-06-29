@@ -2,8 +2,10 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const saltRounds = 10;
-const Jwtsecret = "mysecret";
+const Jwtsecret = process.env.JWT_SECRET;
 
 // Signup function
 const signup = async (req, res) => {

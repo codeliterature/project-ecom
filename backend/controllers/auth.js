@@ -3,7 +3,10 @@ const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
-const Jwtsecret = "mysecret";
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+
+const Jwtsecret = process.env.JWT_SECRET;
 
 
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
